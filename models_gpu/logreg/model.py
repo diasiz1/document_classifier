@@ -16,7 +16,7 @@ ONNX_PATH = ARTIFACTS / "model.onnx"
 META_PATH = ARTIFACTS / "meta.json"
 
 TFIDF_GRID = common.TFIDF_GRID
-N_TFIDF = None
+N_TFIDF = 120
 # cuML's quasi-Newton solver handles L2, L1 and elastic-net, so no solver choice is needed
 CLF_GRID = [
     # C=300/1000 are dropped: on separable chunks weak regularization lets the weights grow without limit, so the
@@ -26,7 +26,7 @@ CLF_GRID = [
     # C stops at 100 here: with weak regularization on (nearly) separable chunks the L1 weights keep growing
     # and the OWL-QN line search fails ("line search failed (code 3)") instead of converging
     {"penalty": ["elasticnet"], "l1_ratio": [0.5], "C": [0.3, 1, 3, 10, 30, 100]},
-    {"penalty": ["l1"], "C": [0.3, 1, 3, 10, 30, 100]},
+    # {"penalty": ["l1"], "C": [0.3, 1, 3, 10, 30, 100]},
 ]
 N_CLF = None  # all 22 with every TF-IDF setting
 SAMPLE_WEIGHT = True  # class_weight="balanced" instead
