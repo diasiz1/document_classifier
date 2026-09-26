@@ -141,6 +141,9 @@ def search(model, chunks, y, doc_ids, n_classes):
                 except Exception as e:
                     print(f"  failed {clf_params}: {e}")
                     continue
+                # GPU probabilities are float32, so rows sum to 1 only within ~1e-7, which log_loss warns about
+                proba = np.asarray(proba, dtype=np.float64)
+                proba /= proba.sum(axis=1, keepdims=True)
                 scores[i, j, f] = (log_loss(y[va], proba, labels=range(n_classes)),
                                    f1_score(y[va], proba.argmax(axis=1), average="macro"))
         done = scores[: i + 1, :, :, 0].mean(axis=2)
