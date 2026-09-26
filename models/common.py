@@ -46,8 +46,6 @@ TFIDF_GRID = {
     # 26 classes with bi/trigrams give a vocabulary of 10^5+ terms, most of them rare OCR noise.
     # max_features keeps only the most frequent ones: less overfitting, smaller and faster ONNX model
     "tfidf__max_features": [5_000, 10_000, 20_000, 50_000, None],
-    "tfidf__use_idf": [True, False],
-    "tfidf__binary": [False, True],
 }
 
 

@@ -16,7 +16,7 @@ ONNX_PATH = ARTIFACTS / "model.onnx"
 META_PATH = ARTIFACTS / "meta.json"
 
 TFIDF_GRID = common.TFIDF_GRID
-N_TFIDF = 60
+N_TFIDF = None
 # cuML's quasi-Newton solver handles L2, L1 and elastic-net, so no solver choice is needed
 CLF_GRID = [
     # C=300/1000 are dropped: on separable chunks weak regularization lets the weights grow without limit, so the
@@ -29,7 +29,7 @@ CLF_GRID = [
     {"penalty": ["l1"], "C": [0.3, 1, 3, 10, 30, 100]},
 ]
 N_CLF = None  # all 22 with every TF-IDF setting
-SAMPLE_WEIGHT = False  # class_weight="balanced" instead
+SAMPLE_WEIGHT = True  # class_weight="balanced" instead
 
 
 def vectorize(params, train_chunks, other_chunks=None):
