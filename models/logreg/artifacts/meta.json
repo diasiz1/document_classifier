@@ -1,0 +1,23 @@
+{
+  "classes": [
+    "confidentiality_agreement",
+    "other"
+  ],
+  "best_params": {
+    "clf__C": 1000,
+    "tfidf__max_df": 0.9,
+    "tfidf__min_df": 1,
+    "tfidf__ngram_range": [
+      1,
+      1
+    ],
+    "tfidf__sublinear_tf": false
+  },
+  "cv_log_loss": 0.012245114128539184,
+  "cv_f1_macro": 1.0,
+  "preprocess": {
+    "chunk_size": 200,
+    "chunk_overlap": 50,
+    "stem_len": 6
+  }
+}

@@ -1,0 +1,658 @@
+[
+  {
+    "file": "data\\ocr_cache\\loan_agreement_active\\b2519c8e3ea4.txt",
+    "label": "loan_agreement_active"
+  },
+  {
+    "file": "data\\ocr_cache\\it_maintenance_runbook\\9c85e7d76921.txt",
+    "label": "it_maintenance_runbook"
+  },
+  {
+    "file": "data\\ocr_cache\\information_security_standard\\69585c338a66.txt",
+    "label": "information_security_standard"
+  },
+  {
+    "file": "data\\ocr_cache\\audit_financial_statement_notes\\bf9b7bffc514.txt",
+    "label": "audit_financial_statement_notes"
+  },
+  {
+    "file": "data\\ocr_cache\\insurance_program_renewal\\c7cf684da3bd.txt",
+    "label": "insurance_program_renewal"
+  },
+  {
+    "file": "data\\ocr_cache\\internal_process_manual\\782513c9c89d.txt",
+    "label": "internal_process_manual"
+  },
+  {
+    "file": "data\\ocr_cache\\it_incident_postmortem\\2239b6b58f06.txt",
+    "label": "it_incident_postmortem"
+  },
+  {
+    "file": "data\\ocr_cache\\facilities_admin_manual\\ce43cf0374a7.txt",
+    "label": "facilities_admin_manual"
+  },
+  {
+    "file": "data\\ocr_cache\\board_meeting_minutes\\45ee408eed79.txt",
+    "label": "board_meeting_minutes"
+  },
+  {
+    "file": "data\\ocr_cache\\internal_process_manual\\3dab6081e592.txt",
+    "label": "internal_process_manual"
+  },
+  {
+    "file": "data\\ocr_cache\\confidentiality_agreement\\250804_соглашение о конф_Калиева Мөлдір (1).txt",
+    "label": "confidentiality_agreement"
+  },
+  {
+    "file": "data\\ocr_cache\\kyc_client_due_diligence_file\\2dd8671ac405.txt",
+    "label": "kyc_client_due_diligence_file"
+  },
+  {
+    "file": "data\\ocr_cache\\kyc_client_due_diligence_file\\89af6ae7964f.txt",
+    "label": "kyc_client_due_diligence_file"
+  },
+  {
+    "file": "data\\ocr_cache\\loan_agreement_superseded_2024\\b084add0e80a.txt",
+    "label": "loan_agreement_superseded_2024"
+  },
+  {
+    "file": "data\\ocr_cache\\audit_financial_statement_notes\\6f1c06f8479a.txt",
+    "label": "audit_financial_statement_notes"
+  },
+  {
+    "file": "data\\ocr_cache\\project_status_report\\8af2d7044491.txt",
+    "label": "project_status_report"
+  },
+  {
+    "file": "data\\ocr_cache\\press_release_draft\\8016dee930c0.txt",
+    "label": "press_release_draft"
+  },
+  {
+    "file": "data\\ocr_cache\\loan_agreement_superseded_2024\\ad991140ab81.txt",
+    "label": "loan_agreement_superseded_2024"
+  },
+  {
+    "file": "data\\ocr_cache\\brand_guidelines\\82954f7cc62a.txt",
+    "label": "brand_guidelines"
+  },
+  {
+    "file": "data\\ocr_cache\\audit_financial_statement_notes\\896b7933db48.txt",
+    "label": "audit_financial_statement_notes"
+  },
+  {
+    "file": "data\\ocr_cache\\hr_onboarding_checklist\\32ed58777a1e.txt",
+    "label": "hr_onboarding_checklist"
+  },
+  {
+    "file": "data\\ocr_cache\\kyc_client_due_diligence_file\\aaf665cbc612.txt",
+    "label": "kyc_client_due_diligence_file"
+  },
+  {
+    "file": "data\\ocr_cache\\confidentiality_agreement\\260101_Соглашение о конф_русс_Шагалакова Гульмира (1).txt",
+    "label": "confidentiality_agreement"
+  },
+  {
+    "file": "data\\ocr_cache\\hr_onboarding_checklist\\d4e9f2bbf3e9.txt",
+    "label": "hr_onboarding_checklist"
+  },
+  {
+    "file": "data\\ocr_cache\\insurance_program_renewal\\26cec8516b00.txt",
+    "label": "insurance_program_renewal"
+  },
+  {
+    "file": "data\\ocr_cache\\town_hall_notes\\5082f6a594a4.txt",
+    "label": "town_hall_notes"
+  },
+  {
+    "file": "data\\ocr_cache\\it_maintenance_runbook\\75d09b747402.txt",
+    "label": "it_maintenance_runbook"
+  },
+  {
+    "file": "data\\ocr_cache\\project_status_report\\4db419cab24b.txt",
+    "label": "project_status_report"
+  },
+  {
+    "file": "data\\ocr_cache\\facilities_admin_manual\\75cf2363377b.txt",
+    "label": "facilities_admin_manual"
+  },
+  {
+    "file": "data\\ocr_cache\\catering_tender_results\\540ad61311f1.txt",
+    "label": "catering_tender_results"
+  },
+  {
+    "file": "data\\ocr_cache\\loan_agreement_active\\be7c1bba8940.txt",
+    "label": "loan_agreement_active"
+  },
+  {
+    "file": "data\\ocr_cache\\audit_financial_statement_notes\\ea8d8bac3e62.txt",
+    "label": "audit_financial_statement_notes"
+  },
+  {
+    "file": "data\\ocr_cache\\facilities_admin_manual\\2fe3878667db.txt",
+    "label": "facilities_admin_manual"
+  },
+  {
+    "file": "data\\ocr_cache\\catering_tender_results\\a0af1fae76dc.txt",
+    "label": "catering_tender_results"
+  },
+  {
+    "file": "data\\ocr_cache\\confidentiality_agreement\\260615_соглашение о конф_рус_Раимбек Нұрасыл (1).txt",
+    "label": "confidentiality_agreement"
+  },
+  {
+    "file": "data\\ocr_cache\\confidentiality_agreement\\250122_Соглашение о конфиденциальности_работник_Багашарова Айдана (1).txt",
+    "label": "confidentiality_agreement"
+  },
+  {
+    "file": "data\\ocr_cache\\external_audit_planning_memo\\06a5a45987c4.txt",
+    "label": "external_audit_planning_memo"
+  },
+  {
+    "file": "data\\ocr_cache\\catering_tender_results\\6ad34a2726b1.txt",
+    "label": "catering_tender_results"
+  },
+  {
+    "file": "data\\ocr_cache\\town_hall_notes\\cf217b0114e7.txt",
+    "label": "town_hall_notes"
+  },
+  {
+    "file": "data\\ocr_cache\\brand_guidelines\\46587c5f8e49.txt",
+    "label": "brand_guidelines"
+  },
+  {
+    "file": "data\\ocr_cache\\loan_agreement_superseded_2024\\c10ebf055fa5.txt",
+    "label": "loan_agreement_superseded_2024"
+  },
+  {
+    "file": "data\\ocr_cache\\confidentiality_agreement\\260312_Соглашение о конф_русс_Арменов Ернар (1).txt",
+    "label": "confidentiality_agreement"
+  },
+  {
+    "file": "data\\ocr_cache\\kyc_client_due_diligence_file\\ee32532e1126.txt",
+    "label": "kyc_client_due_diligence_file"
+  },
+  {
+    "file": "data\\ocr_cache\\catering_tender_results\\831f003ca3cc.txt",
+    "label": "catering_tender_results"
+  },
+  {
+    "file": "data\\ocr_cache\\confidentiality_agreement\\231101_Соглашение о конф_работник_Оразбай Әмірхан (1).txt",
+    "label": "confidentiality_agreement"
+  },
+  {
+    "file": "data\\ocr_cache\\brand_guidelines\\446392f86dc9.txt",
+    "label": "brand_guidelines"
+  },
+  {
+    "file": "data\\ocr_cache\\hr_onboarding_checklist\\abe2474bd443.txt",
+    "label": "hr_onboarding_checklist"
+  },
+  {
+    "file": "data\\ocr_cache\\department_operations_manual\\bac990fa3090.txt",
+    "label": "department_operations_manual"
+  },
+  {
+    "file": "data\\ocr_cache\\external_audit_planning_memo\\c282688e2e6f.txt",
+    "label": "external_audit_planning_memo"
+  },
+  {
+    "file": "data\\ocr_cache\\board_meeting_minutes\\932effc6f886.txt",
+    "label": "board_meeting_minutes"
+  },
+  {
+    "file": "data\\ocr_cache\\fleet_lease_schedule\\65890f0c577c.txt",
+    "label": "fleet_lease_schedule"
+  },
+  {
+    "file": "data\\ocr_cache\\insurance_program_renewal\\760626f5247c.txt",
+    "label": "insurance_program_renewal"
+  },
+  {
+    "file": "data\\ocr_cache\\audit_financial_statement_notes\\3fd0d34546b5.txt",
+    "label": "audit_financial_statement_notes"
+  },
+  {
+    "file": "data\\ocr_cache\\fleet_lease_schedule\\68d200eca6b9.txt",
+    "label": "fleet_lease_schedule"
+  },
+  {
+    "file": "data\\ocr_cache\\fleet_lease_schedule\\99648d24c6ec.txt",
+    "label": "fleet_lease_schedule"
+  },
+  {
+    "file": "data\\ocr_cache\\board_meeting_minutes\\922a5d5de364.txt",
+    "label": "board_meeting_minutes"
+  },
+  {
+    "file": "data\\ocr_cache\\audit_financial_statement_notes\\2ed0b2ee4b57.txt",
+    "label": "audit_financial_statement_notes"
+  },
+  {
+    "file": "data\\ocr_cache\\it_maintenance_runbook\\f8bea9e2a224.txt",
+    "label": "it_maintenance_runbook"
+  },
+  {
+    "file": "data\\ocr_cache\\agreed_upon_procedures_draft_schedule\\2762d1c605e6.txt",
+    "label": "agreed_upon_procedures_draft_schedule"
+  },
+  {
+    "file": "data\\ocr_cache\\facilities_building_notice\\9929ab063c67.txt",
+    "label": "facilities_building_notice"
+  },
+  {
+    "file": "data\\ocr_cache\\it_maintenance_runbook\\4666dc16c4d7.txt",
+    "label": "it_maintenance_runbook"
+  },
+  {
+    "file": "data\\ocr_cache\\compliance_procedure_kyc_refresh\\9975fa09f79c.txt",
+    "label": "compliance_procedure_kyc_refresh"
+  },
+  {
+    "file": "data\\ocr_cache\\external_audit_planning_memo\\f082cbbc33fb.txt",
+    "label": "external_audit_planning_memo"
+  },
+  {
+    "file": "data\\ocr_cache\\it_maintenance_runbook\\e597b53c19b4.txt",
+    "label": "it_maintenance_runbook"
+  },
+  {
+    "file": "data\\ocr_cache\\catering_tender_results\\52e0fbb71aeb.txt",
+    "label": "catering_tender_results"
+  },
+  {
+    "file": "data\\ocr_cache\\facilities_building_notice\\b08e5ef1725e.txt",
+    "label": "facilities_building_notice"
+  },
+  {
+    "file": "data\\ocr_cache\\facilities_admin_manual\\12ddbbdffc72.txt",
+    "label": "facilities_admin_manual"
+  },
+  {
+    "file": "data\\ocr_cache\\board_meeting_minutes\\d759709e3fe8.txt",
+    "label": "board_meeting_minutes"
+  },
+  {
+    "file": "data\\ocr_cache\\brand_guidelines\\8fe082eccf3f.txt",
+    "label": "brand_guidelines"
+  },
+  {
+    "file": "data\\ocr_cache\\loan_agreement_active\\6acb5bbc3e70.txt",
+    "label": "loan_agreement_active"
+  },
+  {
+    "file": "data\\ocr_cache\\loan_agreement_superseded_2024\\6dd84ab9ef0e.txt",
+    "label": "loan_agreement_superseded_2024"
+  },
+  {
+    "file": "data\\ocr_cache\\facilities_building_notice\\7c871235eb76.txt",
+    "label": "facilities_building_notice"
+  },
+  {
+    "file": "data\\ocr_cache\\fleet_lease_schedule\\4def636484eb.txt",
+    "label": "fleet_lease_schedule"
+  },
+  {
+    "file": "data\\ocr_cache\\it_incident_postmortem\\069f03fe8db5.txt",
+    "label": "it_incident_postmortem"
+  },
+  {
+    "file": "data\\ocr_cache\\loan_agreement_superseded_2024\\5f1aff0e8590.txt",
+    "label": "loan_agreement_superseded_2024"
+  },
+  {
+    "file": "data\\ocr_cache\\press_release_draft\\e96ad38e6a71.txt",
+    "label": "press_release_draft"
+  },
+  {
+    "file": "data\\ocr_cache\\it_maintenance_runbook\\ea586aea1d28.txt",
+    "label": "it_maintenance_runbook"
+  },
+  {
+    "file": "data\\ocr_cache\\loan_agreement_superseded_2024\\3c7841365bf3.txt",
+    "label": "loan_agreement_superseded_2024"
+  },
+  {
+    "file": "data\\ocr_cache\\town_hall_notes\\b43708a40daa.txt",
+    "label": "town_hall_notes"
+  },
+  {
+    "file": "data\\ocr_cache\\it_maintenance_runbook\\2334efbbdd1e.txt",
+    "label": "it_maintenance_runbook"
+  },
+  {
+    "file": "data\\ocr_cache\\audit_financial_statement_notes\\a16d7a619f87.txt",
+    "label": "audit_financial_statement_notes"
+  },
+  {
+    "file": "data\\ocr_cache\\catering_tender_results\\e32b7c0f53e2.txt",
+    "label": "catering_tender_results"
+  },
+  {
+    "file": "data\\ocr_cache\\compliance_procedure_kyc_refresh\\be1e2186c99d.txt",
+    "label": "compliance_procedure_kyc_refresh"
+  },
+  {
+    "file": "data\\ocr_cache\\loan_agreement_superseded_2024\\e16b5e6532b5.txt",
+    "label": "loan_agreement_superseded_2024"
+  },
+  {
+    "file": "data\\ocr_cache\\project_status_report\\7965d4e85cb1.txt",
+    "label": "project_status_report"
+  },
+  {
+    "file": "data\\ocr_cache\\confidentiality_agreement\\250210_соглашение о конф_Сәдуақасов Ниетхан.txt",
+    "label": "confidentiality_agreement"
+  },
+  {
+    "file": "data\\ocr_cache\\internal_process_manual\\ee0a57db71cc.txt",
+    "label": "internal_process_manual"
+  },
+  {
+    "file": "data\\ocr_cache\\loan_agreement_superseded_2024\\aaff7bd53ea8.txt",
+    "label": "loan_agreement_superseded_2024"
+  },
+  {
+    "file": "data\\ocr_cache\\external_audit_planning_memo\\adf71c64ab80.txt",
+    "label": "external_audit_planning_memo"
+  },
+  {
+    "file": "data\\ocr_cache\\loan_agreement_active\\1d262694c308.txt",
+    "label": "loan_agreement_active"
+  },
+  {
+    "file": "data\\ocr_cache\\audit_financial_statement_notes\\7903e7d18e94.txt",
+    "label": "audit_financial_statement_notes"
+  },
+  {
+    "file": "data\\ocr_cache\\confidentiality_agreement\\251201_соглашение о конф_русс_Жұмабек Айдана (1) (1).txt",
+    "label": "confidentiality_agreement"
+  },
+  {
+    "file": "data\\ocr_cache\\catering_tender_results\\c28da1ee7a38.txt",
+    "label": "catering_tender_results"
+  },
+  {
+    "file": "data\\ocr_cache\\brand_guidelines\\9ab2bb104c8d.txt",
+    "label": "brand_guidelines"
+  },
+  {
+    "file": "data\\ocr_cache\\department_operations_manual\\4908afb7c12c.txt",
+    "label": "department_operations_manual"
+  },
+  {
+    "file": "data\\ocr_cache\\information_security_standard\\574d17b3a40b.txt",
+    "label": "information_security_standard"
+  },
+  {
+    "file": "data\\ocr_cache\\external_audit_planning_memo\\4a08260debe0.txt",
+    "label": "external_audit_planning_memo"
+  },
+  {
+    "file": "data\\ocr_cache\\insurance_program_renewal\\f5e315b390df.txt",
+    "label": "insurance_program_renewal"
+  },
+  {
+    "file": "data\\ocr_cache\\loan_agreement_active\\3a4aa2dbd6c4.txt",
+    "label": "loan_agreement_active"
+  },
+  {
+    "file": "data\\ocr_cache\\agreed_upon_procedures_draft_schedule\\265c91f8f86c.txt",
+    "label": "agreed_upon_procedures_draft_schedule"
+  },
+  {
+    "file": "data\\ocr_cache\\hr_onboarding_checklist\\cc0bf6c6ef5d.txt",
+    "label": "hr_onboarding_checklist"
+  },
+  {
+    "file": "data\\ocr_cache\\press_release_draft\\90f5d5633b97.txt",
+    "label": "press_release_draft"
+  },
+  {
+    "file": "data\\ocr_cache\\compliance_procedure_kyc_refresh\\f205353029f2.txt",
+    "label": "compliance_procedure_kyc_refresh"
+  },
+  {
+    "file": "data\\ocr_cache\\catering_tender_results\\4d3091ed5420.txt",
+    "label": "catering_tender_results"
+  },
+  {
+    "file": "data\\ocr_cache\\sop_visitor_contractor_access\\6963dfd94d4c.txt",
+    "label": "sop_visitor_contractor_access"
+  },
+  {
+    "file": "data\\ocr_cache\\facilities_building_notice\\603a0251f913.txt",
+    "label": "facilities_building_notice"
+  },
+  {
+    "file": "data\\ocr_cache\\town_hall_notes\\a23a9326efe4.txt",
+    "label": "town_hall_notes"
+  },
+  {
+    "file": "data\\ocr_cache\\kyc_client_due_diligence_file\\c66b5b638410.txt",
+    "label": "kyc_client_due_diligence_file"
+  },
+  {
+    "file": "data\\ocr_cache\\kyc_client_due_diligence_file\\63e162bd710b.txt",
+    "label": "kyc_client_due_diligence_file"
+  },
+  {
+    "file": "data\\ocr_cache\\facilities_admin_manual\\f5ff7f578228.txt",
+    "label": "facilities_admin_manual"
+  },
+  {
+    "file": "data\\ocr_cache\\information_security_standard\\ae477cc510f9.txt",
+    "label": "information_security_standard"
+  },
+  {
+    "file": "data\\ocr_cache\\board_meeting_minutes\\7dfc1b7d6b82.txt",
+    "label": "board_meeting_minutes"
+  },
+  {
+    "file": "data\\ocr_cache\\compliance_procedure_kyc_refresh\\ffb902ce0a5b.txt",
+    "label": "compliance_procedure_kyc_refresh"
+  },
+  {
+    "file": "data\\ocr_cache\\kyc_client_due_diligence_file\\f3fa6d20c8a1.txt",
+    "label": "kyc_client_due_diligence_file"
+  },
+  {
+    "file": "data\\ocr_cache\\board_meeting_minutes\\dbec9933b41d.txt",
+    "label": "board_meeting_minutes"
+  },
+  {
+    "file": "data\\ocr_cache\\town_hall_notes\\b6612c17e4a1.txt",
+    "label": "town_hall_notes"
+  },
+  {
+    "file": "data\\ocr_cache\\insurance_program_renewal\\a1bc2ea19594.txt",
+    "label": "insurance_program_renewal"
+  },
+  {
+    "file": "data\\ocr_cache\\fleet_lease_schedule\\101b4788f276.txt",
+    "label": "fleet_lease_schedule"
+  },
+  {
+    "file": "data\\ocr_cache\\loan_agreement_active\\8d878af064f2.txt",
+    "label": "loan_agreement_active"
+  },
+  {
+    "file": "data\\ocr_cache\\sop_visitor_contractor_access\\eaf5ba5804c5.txt",
+    "label": "sop_visitor_contractor_access"
+  },
+  {
+    "file": "data\\ocr_cache\\facilities_building_notice\\12c9a176278a.txt",
+    "label": "facilities_building_notice"
+  },
+  {
+    "file": "data\\ocr_cache\\internal_process_manual\\aef9b4667acd.txt",
+    "label": "internal_process_manual"
+  },
+  {
+    "file": "data\\ocr_cache\\board_meeting_minutes\\e3b0ed1db08f.txt",
+    "label": "board_meeting_minutes"
+  },
+  {
+    "file": "data\\ocr_cache\\it_maintenance_runbook\\82ed830621e9.txt",
+    "label": "it_maintenance_runbook"
+  },
+  {
+    "file": "data\\ocr_cache\\audit_financial_statement_notes\\4db1d630055f.txt",
+    "label": "audit_financial_statement_notes"
+  },
+  {
+    "file": "data\\ocr_cache\\hr_onboarding_checklist\\4d8359facdb0.txt",
+    "label": "hr_onboarding_checklist"
+  },
+  {
+    "file": "data\\ocr_cache\\facilities_building_notice\\8b05e54f627a.txt",
+    "label": "facilities_building_notice"
+  },
+  {
+    "file": "data\\ocr_cache\\internal_process_manual\\85486bfc847f.txt",
+    "label": "internal_process_manual"
+  },
+  {
+    "file": "data\\ocr_cache\\kyc_client_due_diligence_file\\22c1707dad45.txt",
+    "label": "kyc_client_due_diligence_file"
+  },
+  {
+    "file": "data\\ocr_cache\\facilities_admin_manual\\7db6db025e61.txt",
+    "label": "facilities_admin_manual"
+  },
+  {
+    "file": "data\\ocr_cache\\brand_guidelines\\73937c1e9347.txt",
+    "label": "brand_guidelines"
+  },
+  {
+    "file": "data\\ocr_cache\\compliance_procedure_kyc_refresh\\4086afeba3ee.txt",
+    "label": "compliance_procedure_kyc_refresh"
+  },
+  {
+    "file": "data\\ocr_cache\\kyc_client_due_diligence_file\\9f1a89a5ed42.txt",
+    "label": "kyc_client_due_diligence_file"
+  },
+  {
+    "file": "data\\ocr_cache\\facilities_admin_manual\\8ba1a3214d2b.txt",
+    "label": "facilities_admin_manual"
+  },
+  {
+    "file": "data\\ocr_cache\\department_operations_manual\\dd2d1ddba258.txt",
+    "label": "department_operations_manual"
+  },
+  {
+    "file": "data\\ocr_cache\\loan_agreement_superseded_2024\\ffb3a98e3733.txt",
+    "label": "loan_agreement_superseded_2024"
+  },
+  {
+    "file": "data\\ocr_cache\\loan_agreement_active\\ba475cfc33a4.txt",
+    "label": "loan_agreement_active"
+  },
+  {
+    "file": "data\\ocr_cache\\loan_agreement_active\\c2c9382c9168.txt",
+    "label": "loan_agreement_active"
+  },
+  {
+    "file": "data\\ocr_cache\\hr_onboarding_checklist\\a2f88c901ae1.txt",
+    "label": "hr_onboarding_checklist"
+  },
+  {
+    "file": "data\\ocr_cache\\department_operations_manual\\c459a9940b23.txt",
+    "label": "department_operations_manual"
+  },
+  {
+    "file": "data\\ocr_cache\\press_release_draft\\b5aecff2bbf2.txt",
+    "label": "press_release_draft"
+  },
+  {
+    "file": "data\\ocr_cache\\agreed_upon_procedures_draft_schedule\\6387d5cd9c00.txt",
+    "label": "agreed_upon_procedures_draft_schedule"
+  },
+  {
+    "file": "data\\ocr_cache\\press_release_draft\\2d42722d9dec.txt",
+    "label": "press_release_draft"
+  },
+  {
+    "file": "data\\ocr_cache\\fleet_lease_schedule\\f892239d39eb.txt",
+    "label": "fleet_lease_schedule"
+  },
+  {
+    "file": "data\\ocr_cache\\press_release_draft\\76e6d88d0444.txt",
+    "label": "press_release_draft"
+  },
+  {
+    "file": "data\\ocr_cache\\internal_process_manual\\ea458c3cad3b.txt",
+    "label": "internal_process_manual"
+  },
+  {
+    "file": "data\\ocr_cache\\project_status_report\\f4dfb4296f93.txt",
+    "label": "project_status_report"
+  },
+  {
+    "file": "data\\ocr_cache\\loan_agreement_active\\85afaaca89ad.txt",
+    "label": "loan_agreement_active"
+  },
+  {
+    "file": "data\\ocr_cache\\loan_agreement_active\\b38facf69a94.txt",
+    "label": "loan_agreement_active"
+  },
+  {
+    "file": "data\\ocr_cache\\compliance_procedure_kyc_refresh\\5797acb4d7e2.txt",
+    "label": "compliance_procedure_kyc_refresh"
+  },
+  {
+    "file": "data\\ocr_cache\\audit_financial_statement_notes\\e334c4d4d3ea.txt",
+    "label": "audit_financial_statement_notes"
+  },
+  {
+    "file": "data\\ocr_cache\\department_operations_manual\\a6f8f8c87936.txt",
+    "label": "department_operations_manual"
+  },
+  {
+    "file": "data\\ocr_cache\\town_hall_notes\\bd680edc8455.txt",
+    "label": "town_hall_notes"
+  },
+  {
+    "file": "data\\ocr_cache\\it_maintenance_runbook\\78d55cf4e938.txt",
+    "label": "it_maintenance_runbook"
+  },
+  {
+    "file": "data\\ocr_cache\\insurance_program_renewal\\7cd2f8a812cd.txt",
+    "label": "insurance_program_renewal"
+  },
+  {
+    "file": "data\\ocr_cache\\kyc_client_due_diligence_file\\a144690a213c.txt",
+    "label": "kyc_client_due_diligence_file"
+  },
+  {
+    "file": "data\\ocr_cache\\external_audit_planning_memo\\e6503fd13537.txt",
+    "label": "external_audit_planning_memo"
+  },
+  {
+    "file": "data\\ocr_cache\\project_status_report\\77628b8b3cab.txt",
+    "label": "project_status_report"
+  },
+  {
+    "file": "data\\ocr_cache\\department_operations_manual\\30fa9f2d79a7.txt",
+    "label": "department_operations_manual"
+  },
+  {
+    "file": "data\\ocr_cache\\facilities_admin_manual\\3c8ebcc791c3.txt",
+    "label": "facilities_admin_manual"
+  },
+  {
+    "file": "data\\ocr_cache\\loan_agreement_superseded_2024\\a2ca5ce24acb.txt",
+    "label": "loan_agreement_superseded_2024"
+  },
+  {
+    "file": "data\\ocr_cache\\project_status_report\\329e188a2c9d.txt",
+    "label": "project_status_report"
+  },
+  {
+    "file": "data\\ocr_cache\\internal_process_manual\\7b9cafe845ae.txt",
+    "label": "internal_process_manual"
+  },
+  {
+    "file": "data\\ocr_cache\\agreed_upon_procedures_draft_schedule\\a81217cea0a1.txt",
+    "label": "agreed_upon_procedures_draft_schedule"
+  }
+]
