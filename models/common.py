@@ -29,7 +29,7 @@ import preprocess
 DATA_DIR = Path(os.environ.get("DATA_DIR", "data"))
 TRAIN_PATH = DATA_DIR / "train.json"
 TEST_PATH = DATA_DIR / "test.json"
-SEED = 42
+SEED = 67
 
 # TF-IDF part of every PARAM_GRID. Not searched on purpose:
 #   analyzer / token_pattern / lowercase / stop_words / strip_accents - text is already normalized,
@@ -46,6 +46,8 @@ TFIDF_GRID = {
     # 26 classes with bi/trigrams give a vocabulary of 10^5+ terms, most of them rare OCR noise.
     # max_features keeps only the most frequent ones: less overfitting, smaller and faster ONNX model
     "tfidf__max_features": [5_000, 10_000, 20_000, 50_000, None],
+    "tfidf__use_idf": [True, False],
+    "tfidf__binary": [False, True],
 }
 
 
