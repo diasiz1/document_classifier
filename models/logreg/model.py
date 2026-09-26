@@ -28,7 +28,7 @@ PARAM_GRID = [
     },
 ]
 N_ITER = 1000
-SAMPLE_WEIGHT = True  # class_weight="balanced" instead
+SAMPLE_WEIGHT = False  # class_weight="balanced" instead
 
 
 def build_model():

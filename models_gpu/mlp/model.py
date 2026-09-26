@@ -26,7 +26,7 @@ TFIDF_GRID = {
     "ngram_range": [(1, 1), (1, 2)],
     "max_features": [2_000, 5_000, 10_000, 20_000],
 }
-N_TFIDF = 10
+N_TFIDF = 90
 CLF_GRID = {
     "hidden_layer_sizes": [(64,), (128,), (256,), (512,), (256, 128), (512, 256)],
     "activation": ["relu", "tanh"],

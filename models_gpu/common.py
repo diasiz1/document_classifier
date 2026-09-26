@@ -17,7 +17,8 @@ therefore works with models/common.py's OnnxModel, the test scripts and models/c
 
 Every package's model.py defines:
     ARTIFACTS, ONNX_PATH, META_PATH
-    TFIDF_GRID, N_TFIDF   TfidfVectorizer settings (no "tfidf__" prefix); N_TFIDF random ones (None = all)
+    TFIDF_GRID, N_TFIDF   TfidfVectorizer settings (no "tfidf__" prefix); None = all of them, int = N_TFIDF
+                          chosen by Bayesian optimization (Optuna TPE, see models/common.py suggest())
     CLF_GRID, N_CLF       classifier settings tried with every TF-IDF setting; N_CLF random ones (None = all)
     SAMPLE_WEIGHT         pass balanced sample weights to the classifier
     vectorize(params, train_chunks, other_chunks=None) -> (vectorizer, X_train, X_other) on the device
@@ -117,15 +118,23 @@ def search(model, chunks, y, doc_ids, n_classes):
     if n_splits < 2:
         raise SystemExit("Need at least 2 training documents per class for cross-validation.")
     folds = list(StratifiedGroupKFold(n_splits=n_splits, shuffle=True, random_state=SEED).split(chunks, y, doc_ids))
-    tfidf_settings = _settings(model.TFIDF_GRID, model.N_TFIDF)
     clf_settings = _settings(model.CLF_GRID, model.N_CLF)
-    print(f"{len(tfidf_settings)} TF-IDF x {len(clf_settings)} classifier settings = "
-          f"{len(tfidf_settings) * len(clf_settings)} candidates, {n_splits} folds")
+    bayes = model.N_TFIDF is not None and model.N_TFIDF < len(ParameterGrid(model.TFIDF_GRID))
+    n_tfidf = model.N_TFIDF if bayes else len(ParameterGrid(model.TFIDF_GRID))
+    print(f"{n_tfidf} TF-IDF{' (Bayesian optimization)' if bayes else ''} x {len(clf_settings)} classifier "
+          f"settings = {n_tfidf * len(clf_settings)} candidates, {n_splits} folds")
 
-    # scores[i, j, fold] = (log loss, f1_macro) of TF-IDF setting i + classifier setting j
-    scores = np.full((len(tfidf_settings), len(clf_settings), n_splits, 2), np.nan)
+    results = []  # every scored candidate: {"tfidf", "clf", "cv_log_loss", "cv_f1_macro"}
+    seen = {}  # TF-IDF setting -> its best CV log loss (TPE can suggest a setting again)
     start = perf_counter()
-    for i, tfidf_params in enumerate(tfidf_settings):
+
+    def evaluate(tfidf_params):
+        """Scores every classifier setting on this TF-IDF setting; returns the best CV log loss (NaN if none)."""
+        key = repr(tfidf_params)
+        if key in seen:
+            return seen[key]
+        # scores[j, fold] = (log loss, f1_macro) of classifier setting j
+        scores = np.full((len(clf_settings), n_splits, 2), np.nan)
         for f, (tr, va) in enumerate(folds):
             try:
                 _, X_tr, X_va = model.vectorize(tfidf_params, chunks[tr], chunks[va])
@@ -144,25 +153,39 @@ def search(model, chunks, y, doc_ids, n_classes):
                 # GPU probabilities are float32, so rows sum to 1 only within ~1e-7, which log_loss warns about
                 proba = np.asarray(proba, dtype=np.float64)
                 proba /= proba.sum(axis=1, keepdims=True)
-                scores[i, j, f] = (log_loss(y[va], proba, labels=range(n_classes)),
-                                   f1_score(y[va], proba.argmax(axis=1), average="macro"))
-        done = scores[: i + 1, :, :, 0].mean(axis=2)
-        best = np.nan if np.isnan(done).all() else np.nanmin(done)
-        print(f"TF-IDF setting {i + 1}/{len(tfidf_settings)} done, best CV log loss so far {best:.4f}, "
-              f"{perf_counter() - start:.0f}s")
+                scores[j, f] = (log_loss(y[va], proba, labels=range(n_classes)),
+                                f1_score(y[va], proba.argmax(axis=1), average="macro"))
+        mean = scores.mean(axis=1)  # a candidate that failed on any fold stays NaN
+        for j, (loss, f1) in enumerate(mean):
+            if not np.isnan(loss):
+                results.append({"tfidf": tfidf_params, "clf": clf_settings[j],
+                                "cv_log_loss": float(loss), "cv_f1_macro": float(f1)})
+        seen[key] = np.nan if np.isnan(mean[:, 0]).all() else float(np.nanmin(mean[:, 0]))
 
-    mean = scores.mean(axis=2)  # a candidate that failed on any fold stays NaN
-    if np.isnan(mean[..., 0]).all():
+        best = min((r["cv_log_loss"] for r in results), default=np.nan)
+        elapsed = perf_counter() - start
+        remaining = elapsed / len(seen) * (n_tfidf - len(seen))
+        print(f"TF-IDF setting {len(seen)}/{n_tfidf} done, best CV log loss so far {best:.4f}, "
+              f"{elapsed:.0f}s elapsed, ~{remaining / 60:.0f} min left")
+        return seen[key]
+
+    if bayes:
+        # every TF-IDF setting costs one vectorization per fold, so TPE picks which ones to try; each is
+        # scored by its best classifier setting (all of which are cheap to fit on the vectorized folds)
+        study = cpu.tpe_study()
+        study.optimize(lambda trial: evaluate(cpu.suggest(trial, model.TFIDF_GRID)), n_trials=model.N_TFIDF)
+    else:
+        for tfidf_params in ParameterGrid(model.TFIDF_GRID):
+            evaluate(tfidf_params)
+
+    if not results:
         raise SystemExit("Every candidate failed.")
-    order = np.argsort(np.where(np.isnan(mean[..., 0]), np.inf, mean[..., 0]), axis=None)
-    ranked = [np.unravel_index(k, mean.shape[:2]) for k in order[:10]]
-    top = [{"tfidf": tfidf_settings[i], "clf": clf_settings[j],
-            "cv_log_loss": float(mean[i, j, 0]), "cv_f1_macro": float(mean[i, j, 1])} for i, j in ranked]
+    top = sorted(results, key=lambda r: r["cv_log_loss"])[:10]
     best = top[0]
     print(f"best CV log loss: {best['cv_log_loss']:.4f}")
     print(f"best CV f1_macro: {best['cv_f1_macro']:.4f}")
     print("best params:", best["tfidf"], best["clf"])
-    return best, top, int((~np.isnan(mean[..., 0])).sum())
+    return best, top, len(results)
 
 
 def _jsonable(params, prefix):
@@ -190,6 +213,7 @@ def train(model, train_path=TRAIN_PATH):
         "best_params": {**_jsonable(best["tfidf"], "tfidf__"), **_jsonable(best["clf"], "clf__")},
         "cv_log_loss": best["cv_log_loss"],
         "cv_f1_macro": best["cv_f1_macro"],
+        "search": "grid" if model.N_TFIDF is None else "bayesian (TPE) over TF-IDF",
         "candidates_tried": n_candidates,
         "train_seconds": round(perf_counter() - start, 1),
         "onnx_max_diff": float(onnx_diff),

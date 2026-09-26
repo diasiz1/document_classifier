@@ -3,24 +3,28 @@
 Every model package (models/<name>/) has a model.py that defines:
     ARTIFACTS, ONNX_PATH, META_PATH  where the exported model is saved
     PARAM_GRID                       hyperparameters to search (a dict, or a list of dicts)
-    N_ITER                           None: try every setting in PARAM_GRID; int: try N_ITER random ones
+    N_ITER                           None: try every setting in PARAM_GRID; int: N_ITER rounds of Bayesian
+                                     optimization (Optuna TPE) over the ranges PARAM_GRID spans, see suggest()
     SAMPLE_WEIGHT                    True for classifiers without class_weight: pass balanced sample weights
     build_model()                    an untrained Pipeline([("tfidf", ...), ("clf", ...)])
 and thin train.py / test.py that call train() / evaluate() below.
 """
 import json
 import os
+import warnings
 from collections import Counter
 from pathlib import Path, PureWindowsPath
 from time import perf_counter
 
 import numpy as np
 import onnxruntime as ort
+from joblib import Parallel, delayed
 from skl2onnx import to_onnx
 from skl2onnx.common.data_types import StringTensorType
+from sklearn.base import clone
 from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.metrics import classification_report, confusion_matrix
-from sklearn.model_selection import GridSearchCV, RandomizedSearchCV, StratifiedGroupKFold
+from sklearn.metrics import classification_report, confusion_matrix, f1_score, log_loss
+from sklearn.model_selection import GridSearchCV, StratifiedGroupKFold
 from sklearn.utils.class_weight import compute_sample_weight
 
 import preprocess
@@ -81,36 +85,135 @@ def load(path):
     return texts, labels
 
 
+def _suggest_value(trial, name, values):
+    values = list(values)
+    if len(values) == 1:
+        return values[0]
+    if all(isinstance(v, (int, float)) and not isinstance(v, bool) for v in values):
+        # numbers become a range, so TPE can model them and try values between the listed ones;
+        # log scale for ranges like C = 0.01..100
+        lo, hi = min(values), max(values)
+        log = lo > 0 and hi / lo >= 10
+        if all(isinstance(v, int) for v in values):
+            return trial.suggest_int(name, lo, hi, log=log)
+        return trial.suggest_float(name, lo, hi, log=log)
+    # everything else (tuples, strings, None, bools) is categorical; Optuna stores the index since it
+    # only accepts primitive choices
+    return values[trial.suggest_categorical(name, list(range(len(values))))]
+
+
+def suggest(trial, grid):
+    """Sample one setting from a PARAM_GRID-style grid (a dict, or a list of dicts) for an Optuna trial.
+
+    Lists of numbers are searched as ranges between their smallest and largest value, other lists as categories.
+    For a list of dicts the trial first picks a dict; a key whose values differ between dicts gets a separate
+    Optuna parameter per dict (e.g. C of the lbfgs and saga branches), shared keys are learned across dicts.
+    """
+    grids = grid if isinstance(grid, list) else [grid]
+    b = trial.suggest_categorical("grid", list(range(len(grids)))) if len(grids) > 1 else 0
+    params = {}
+    for key, values in grids[b].items():
+        same = all(list(g[key]) == list(values) for g in grids if key in g)
+        params[key] = _suggest_value(trial, key if same else f"{b}:{key}", values)
+    return params
+
+
+def tpe_study():
+    import optuna
+
+    optuna.logging.set_verbosity(optuna.logging.WARNING)
+    warnings.filterwarnings("ignore", category=optuna.exceptions.ExperimentalWarning)
+    # multivariate: models interactions (e.g. best C depends on max_features); group: handles the
+    # conditional spaces of list-of-dict grids; constant_liar: trials evaluated in parallel don't all
+    # get suggested the same point
+    sampler = optuna.samplers.TPESampler(seed=SEED, multivariate=True, group=True, constant_liar=True)
+    return optuna.create_study(direction="minimize", sampler=sampler)
+
+
+def _fit_score(estimator, params, chunks, labels, classes, tr, va, sample_weight):
+    """(log loss, f1_macro) of one setting on one fold; NaNs if it fails to fit."""
+    chunks, labels = np.asarray(chunks, dtype=object), np.asarray(labels)
+    fit_params = {} if sample_weight is None else {"clf__sample_weight": sample_weight[tr]}
+    try:
+        est = clone(estimator).set_params(**params).fit(chunks[tr], labels[tr], **fit_params)
+        proba = np.zeros((len(va), len(classes)))
+        proba[:, np.searchsorted(classes, est.classes_)] = est.predict_proba(chunks[va])
+    except Exception as e:
+        print(f"  failed {params}: {e}")
+        return np.nan, np.nan
+    y = labels[va]
+    return log_loss(y, proba, labels=classes), f1_score(y, classes[proba.argmax(axis=1)], average="macro")
+
+
+def bayes_search(model, chunks, labels, doc_ids, cv, sample_weight):
+    """N_ITER settings chosen by TPE; each is scored like GridSearchCV would (mean over the CV folds)."""
+    from optuna.trial import TrialState
+
+    study = tpe_study()
+    folds = list(cv.split(chunks, labels, doc_ids))
+    classes = np.unique(labels)
+    estimator = model.build_model()
+    # BO is sequential, so settings are asked in batches that fill the CPU (batch x folds fits in parallel)
+    batch = max(1, (os.cpu_count() or 1) // len(folds))
+    seen = {}  # TPE can suggest a setting again (categorical/int params); reuse its score
+    start = perf_counter()
+    with Parallel(n_jobs=-1) as parallel:
+        while len(study.trials) < model.N_ITER:
+            trials = [study.ask() for _ in range(min(batch, model.N_ITER - len(study.trials)))]
+            settings = [suggest(t, model.PARAM_GRID) for t in trials]
+            new = list({repr(p): p for p in settings if repr(p) not in seen}.values())
+            scores = parallel(delayed(_fit_score)(estimator, p, chunks, labels, classes, tr, va, sample_weight)
+                              for p in new for tr, va in folds)
+            for k, p in enumerate(new):
+                seen[repr(p)] = np.mean(scores[k * len(folds):(k + 1) * len(folds)], axis=0)  # NaN if a fold failed
+            for t, p in zip(trials, settings):
+                loss, f1 = seen[repr(p)]
+                t.set_user_attr("params", p)
+                t.set_user_attr("f1_macro", float(f1))
+                if np.isnan(loss):
+                    study.tell(t, state=TrialState.FAIL)
+                else:
+                    study.tell(t, float(loss))
+            done = [t for t in study.trials if t.value is not None]
+            best = f"{study.best_value:.4f}" if done else "n/a"
+            print(f"trial {len(study.trials)}/{model.N_ITER}, best CV log loss so far {best}, "
+                  f"{perf_counter() - start:.0f}s")
+    if not any(t.value is not None for t in study.trials):
+        raise SystemExit("Every candidate failed.")
+    best = study.best_trial
+    fit_params = {} if sample_weight is None else {"clf__sample_weight": sample_weight}
+    pipeline = clone(estimator).set_params(**best.user_attrs["params"]).fit(chunks, labels, **fit_params)
+    return pipeline, best.user_attrs["params"], best.value, best.user_attrs["f1_macro"], len(seen)
+
+
 def tune(model, chunks, labels, doc_ids):
+    """Returns (pipeline refit on all chunks, best params, CV log loss, CV f1_macro, number of settings tried)."""
     # folds are split by document so chunks of one document never land in both train and validation
     doc_labels = dict(zip(doc_ids, labels))
     n_splits = min(5, min(Counter(doc_labels.values()).values()))
     if n_splits < 2:
         raise SystemExit("Need at least 2 training documents per class for cross-validation.")
+    cv = StratifiedGroupKFold(n_splits=n_splits, shuffle=True, random_state=SEED)
+    # same effect as class_weight="balanced" for classifiers that don't have that option
+    sample_weight = compute_sample_weight("balanced", labels) if getattr(model, "SAMPLE_WEIGHT", False) else None
     # select by log loss: unlike F1 it rewards confident correct probabilities, so it can pick
     # among candidates that all classify perfectly (F1 ties would fall back to the first, weakest C)
-    options = dict(
-        scoring={"f1_macro": "f1_macro", "neg_log_loss": "neg_log_loss"}, refit="neg_log_loss",
-        n_jobs=-1, verbose=1, cv=StratifiedGroupKFold(n_splits=n_splits, shuffle=True, random_state=SEED))
     if model.N_ITER is None:
-        search = GridSearchCV(model.build_model(), model.PARAM_GRID, **options)
+        search = GridSearchCV(model.build_model(), model.PARAM_GRID, cv=cv, n_jobs=-1, verbose=1,
+                              scoring={"f1_macro": "f1_macro", "neg_log_loss": "neg_log_loss"},
+                              refit="neg_log_loss")
+        fit_params = {} if sample_weight is None else {"clf__sample_weight": sample_weight}
+        search.fit(chunks, labels, groups=doc_ids, **fit_params)
+        result = (search.best_estimator_, search.best_params_, -search.best_score_,
+                  search.cv_results_["mean_test_f1_macro"][search.best_index_], len(search.cv_results_["params"]))
     else:
-        # the full grids have thousands of settings; a random sample of them finds a near-best one much faster
-        search = RandomizedSearchCV(model.build_model(), model.PARAM_GRID, n_iter=model.N_ITER,
-                                    random_state=SEED, **options)
-    fit_params = {}
-    if getattr(model, "SAMPLE_WEIGHT", False):
-        # same effect as class_weight="balanced" for classifiers that don't have that option
-        fit_params["clf__sample_weight"] = compute_sample_weight("balanced", labels)
-    search.fit(chunks, labels, groups=doc_ids, **fit_params)
-    print(f"best CV log loss: {-search.best_score_:.4f}")
-    print(f"best CV f1_macro: {cv_f1(search):.4f}")
-    print("best params:", search.best_params_)
-    return search
-
-
-def cv_f1(search):
-    return search.cv_results_["mean_test_f1_macro"][search.best_index_]
+        # the full grids have thousands of settings; Bayesian optimization concentrates the budget on the
+        # promising region instead of sampling it uniformly like RandomizedSearchCV
+        result = bayes_search(model, chunks, labels, doc_ids, cv, sample_weight)
+    print(f"best CV log loss: {result[2]:.4f}")
+    print(f"best CV f1_macro: {result[3]:.4f}")
+    print("best params:", result[1])
+    return result
 
 
 def export_onnx(pipeline, sample, onnx_path):
@@ -139,18 +242,18 @@ def train(model, train_path=TRAIN_PATH):
     print(f"{len(texts)} documents -> {len(chunks)} chunks, per class: {dict(Counter(chunk_labels))}")
 
     start = perf_counter()
-    search = tune(model, chunks, chunk_labels, doc_ids)
-    pipeline = search.best_estimator_  # refit on all training chunks
+    pipeline, best_params, cv_log_loss, cv_f1_macro, n_candidates = tune(model, chunks, chunk_labels, doc_ids)
 
     model.ARTIFACTS.mkdir(exist_ok=True)
     onnx_diff = export_onnx(pipeline, chunks[:50], model.ONNX_PATH)
     meta = {
         "model": model.__name__.split(".")[-2],
         "classes": pipeline.classes_.tolist(),
-        "best_params": {k: list(v) if isinstance(v, tuple) else v for k, v in search.best_params_.items()},
-        "cv_log_loss": -search.best_score_,
-        "cv_f1_macro": cv_f1(search),
-        "candidates_tried": len(search.cv_results_["params"]),
+        "best_params": {k: list(v) if isinstance(v, tuple) else v for k, v in best_params.items()},
+        "cv_log_loss": float(cv_log_loss),
+        "cv_f1_macro": float(cv_f1_macro),
+        "search": "grid" if model.N_ITER is None else "bayesian (TPE)",
+        "candidates_tried": n_candidates,
         "train_seconds": round(perf_counter() - start, 1),
         "onnx_max_diff": float(onnx_diff),
         "preprocess": {"chunk_size": preprocess.CHUNK_SIZE, "chunk_overlap": preprocess.CHUNK_OVERLAP,

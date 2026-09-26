@@ -16,7 +16,7 @@ ONNX_PATH = ARTIFACTS / "model.onnx"
 META_PATH = ARTIFACTS / "meta.json"
 
 TFIDF_GRID = common.TFIDF_GRID
-N_TFIDF = None
+N_TFIDF = 90
 # cuML's quasi-Newton solver handles L2, L1 and elastic-net, so no solver choice is needed
 CLF_GRID = [
     # C=300/1000 are dropped: on separable chunks weak regularization lets the weights grow without limit, so the
@@ -44,7 +44,7 @@ def build_clf(params):
     from cuml.linear_model import LogisticRegression as CumlLogisticRegression
 
     # more line search steps than the default 50 before giving up
-    return CumlLogisticRegression(class_weight="balanced", max_iter=5000, linesearch_max_iter=100, **params)
+    return CumlLogisticRegression(class_weight="balanced", max_iter=15000, linesearch_max_iter=100, **params)
 
 
 def fit_proba(X_train, y_train, X_val, params, n_classes, sample_weight=None):

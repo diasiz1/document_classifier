@@ -23,7 +23,7 @@ META_PATH = ARTIFACTS / "meta.json"
 # cuML's LinearSVC needs dense input: 50k float64 features x a few thousand chunks is ~1 GB of GPU memory,
 # an uncapped trigram vocabulary would be 10x that
 TFIDF_GRID = {**common.TFIDF_GRID, "max_features": [5_000, 10_000, 20_000, 50_000]}
-N_TFIDF = 40
+N_TFIDF = 90
 CLF_GRID = [
     # C stops at 30: hinge loss with a larger C converges very slowly and hits max_iter
     {"penalty": ["l2"], "loss": ["squared_hinge", "hinge"], "C": [0.01, 0.03, 0.1, 0.3, 1, 3, 10, 30]},

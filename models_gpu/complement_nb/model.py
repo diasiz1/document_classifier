@@ -17,13 +17,13 @@ META_PATH = ARTIFACTS / "meta.json"
 
 # NB uses the term weights directly, so row normalization matters (None = raw tf-idf)
 TFIDF_GRID = {**common.TFIDF_GRID, "norm": ["l2", "l1", None]}
-N_TFIDF = 300  # NB fits take milliseconds, the TF-IDF is the whole cost
+N_TFIDF = 90  # NB fits take milliseconds, the TF-IDF is the whole cost
 CLF_GRID = {
     "alpha": [1e-3, 3e-3, 0.01, 0.03, 0.1, 0.3, 1.0],  # additive smoothing
     "norm": [False, True],  # second normalization of the class weights
 }
 N_CLF = None
-SAMPLE_WEIGHT = True  # ComplementNB has no class_weight
+SAMPLE_WEIGHT = False  # ComplementNB has no class_weight
 
 vectorize = common.cuml_vectorize
 

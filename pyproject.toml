@@ -6,6 +6,7 @@ readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
     "onnxruntime>=1.30.0",
+    "optuna>=5.0.0",
     "scikit-learn>=1.9.1",
     "skl2onnx>=1.20.0",
     "torch>=2.14.0",
