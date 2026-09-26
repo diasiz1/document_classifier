@@ -25,7 +25,8 @@ META_PATH = ARTIFACTS / "meta.json"
 TFIDF_GRID = {**common.TFIDF_GRID, "max_features": [5_000, 10_000, 20_000, 50_000]}
 N_TFIDF = 40
 CLF_GRID = [
-    {"penalty": ["l2"], "loss": ["squared_hinge", "hinge"], "C": [0.01, 0.03, 0.1, 0.3, 1, 3, 10, 100]},
+    # C stops at 30: hinge loss with a larger C converges very slowly and hits max_iter
+    {"penalty": ["l2"], "loss": ["squared_hinge", "hinge"], "C": [0.01, 0.03, 0.1, 0.3, 1, 3, 10, 30]},
     # L1: sparse weights; only supported with squared_hinge
     {"penalty": ["l1"], "loss": ["squared_hinge"], "C": [0.1, 0.3, 1, 3, 10]},
 ]
