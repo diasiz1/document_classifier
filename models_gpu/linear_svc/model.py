@@ -20,7 +20,7 @@ ARTIFACTS = Path(__file__).parent / "artifacts"
 ONNX_PATH = ARTIFACTS / "model.onnx"
 META_PATH = ARTIFACTS / "meta.json"
 
-# cuML's LinearSVC needs dense input: 50k features x a few thousand chunks is ~0.6 GB of GPU memory,
+# cuML's LinearSVC needs dense input: 50k float64 features x a few thousand chunks is ~1 GB of GPU memory,
 # an uncapped trigram vocabulary would be 10x that
 TFIDF_GRID = {**common.TFIDF_GRID, "max_features": [5_000, 10_000, 20_000, 50_000]}
 N_TFIDF = 40
@@ -28,6 +28,7 @@ CLF_GRID = [
     # C stops at 30: hinge loss with a larger C converges very slowly and hits max_iter
     {"penalty": ["l2"], "loss": ["squared_hinge", "hinge"], "C": [0.01, 0.03, 0.1, 0.3, 1, 3, 10, 30]},
     # L1: sparse weights; only supported with squared_hinge
+    # (solved with OWL-QN like cuML's L1 LogisticRegression; C stays <= 10 so its line search doesn't fail)
     {"penalty": ["l1"], "loss": ["squared_hinge"], "C": [0.1, 0.3, 1, 3, 10]},
 ]
 N_CLF = None  # all 21 with every TF-IDF setting
@@ -36,15 +37,18 @@ CALIBRATION_FOLDS = 3  # same as CalibratedClassifierCV(cv=3) in models/linear_s
 
 
 def vectorize(params, train_chunks, other_chunks=None):
+    # float64 for the same reason as in models_gpu/logreg: in float32 the quasi-Newton solver can't tell tiny
+    # loss changes from rounding noise, so it fails its line search or runs to max_iter
     vec, X, X_other = common.cuml_vectorize(params, train_chunks, other_chunks)
-    return vec, X.toarray(), None if X_other is None else X_other.toarray()
+    X = X.astype(np.float64).toarray()
+    return vec, X, None if X_other is None else X_other.astype(np.float64).toarray()
 
 
 def build_clf(params):
     common.require_cuml()
     from cuml.svm import LinearSVC
 
-    return LinearSVC(class_weight="balanced", max_iter=10_000, **params)
+    return LinearSVC(class_weight="balanced", max_iter=10_000, **params)  # linesearch_max_iter is already 100
 
 
 def platt(scores, target):
@@ -78,7 +82,7 @@ def fit_proba(X_train, y_train, X_val, params, n_classes, sample_weight=None):
     for fit_idx, cal_idx in inner.split(np.zeros(len(y_train)), y_train):
         fit_rows, cal_rows = cp.asarray(fit_idx), cp.asarray(cal_idx)
         weights = None if sample_weight is None else sample_weight[fit_idx]
-        clf = build_clf(params).fit(X_train[fit_rows], y_train[fit_idx].astype(np.float32), sample_weight=weights)
+        clf = build_clf(params).fit(X_train[fit_rows], y_train[fit_idx].astype(np.float64), sample_weight=weights)
         clf_classes = np.asarray(clf.classes_).astype(int)
         d_cal, d_val = _decision(clf, X_train[cal_rows]), _decision(clf, X_val)
         if d_cal.shape[1] == 1:  # binary: the score column belongs to the second class
